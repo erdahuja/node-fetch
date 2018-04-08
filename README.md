@@ -114,12 +114,19 @@ fetch('http://httpbin.org/post', { method: 'POST', body: 'a=1' })
 
 // post with stream from file
 
-import { createReadStream } from 'fs';
+import { readFile } from 'fs';
 
-const stream = createReadStream('input.txt');
-fetch('http://httpbin.org/post', { method: 'POST', body: stream })
+readFile('test/assets/test.txt', (error, file) => {
+	fetch('http://httpbin.org/post', {
+		method: 'POST',
+		headers: {
+			"Content-Length": file.length
+		},
+		body: file
+	})
 	.then(res => res.json())
 	.then(json => console.log(json));
+});
 
 // post with JSON
 
